@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.26730.12
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "pilotHUD", "pilotHUD\pilotHUD.csproj", "{60412E99-A89A-416C-AD1E-08742908B23C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{60412E99-A89A-416C-AD1E-08742908B23C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{60412E99-A89A-416C-AD1E-08742908B23C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{60412E99-A89A-416C-AD1E-08742908B23C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{60412E99-A89A-416C-AD1E-08742908B23C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {1FC2461E-093B-4A12-BA1A-1A2CC49D78CF}
+	EndGlobalSection
+EndGlobal
