@@ -20,6 +20,16 @@
           <RowDefinition Height="10*" />
           <RowDefinition Height="90*" />
         </Grid.RowDefinitions>
+        <Grid Grid.Row="0" ClipToBounds="True">
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="35*" />
+            <ColumnDefinition Width="30*" />
+            <ColumnDefinition Width="35*" />
+          </Grid.ColumnDefinitions>
+          <Grid Name="Grid_Compass" Grid.Column="1" ClipToBounds="True">
+            <Canvas Name="Canvas_Compass" HorizontalAlignment="Left" VerticalAlignment="Top" />
+          </Grid>
+        </Grid>
         <Grid Name="Grid_PitchIndicator" Grid.Row="1" ClipToBounds="True">
           <Canvas Name="Canvas_PitchIndicator" HorizontalAlignment="Center" VerticalAlignment="Center" />
         </Grid>

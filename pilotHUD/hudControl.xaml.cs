@@ -219,11 +219,19 @@ namespace pilotHUD
       }
     }
 
-    private void DrawPitchTicks(double pitchDeg)
+    private void DrawPitchTicks(double pitchDeg, double rollAngle)
     {
       double vertPixelsPerDeg = Grid_Viewport.ActualHeight / VERTICAL_DEG_TO_DISP;
       
       double zeroOffset = -(pitchDeg * vertPixelsPerDeg);
+
+      // the pitch indicator grid is only a percentage of the overall viewport height
+      // - need to account for this (so pitch '0' indicator lines up with ground/sky border)
+      double gridOffset = ((Grid_Viewport.ActualHeight - Grid_PitchIndicator.ActualHeight) / 2.0) * 
+        Math.Cos(rollAngle * Math.PI / 180.0);
+
+      zeroOffset += gridOffset;
+
       DrawMajorPitchTick(zeroOffset, 0, false);
 
       for (int i = 1; i < 10; i++)
@@ -240,32 +248,20 @@ namespace pilotHUD
 
         offset += (5 * vertPixelsPerDeg);
         DrawMinorPitchTick(offset, -pitchVal + 5);
-
-
       }
     }
 
     private void DrawCompass(double yawDeg)
     {
-      double wl = Grid_Viewport.ActualWidth;
-      double compass_percentage = 0.3; // percentage of screen width to use for compass display
-      Line bottomLine = new Line();
-      bottomLine.X1 = ((1 - compass_percentage)/2) * wl;
-      bottomLine.Y1 = 30;
-      bottomLine.X2 = (((1 - compass_percentage) / 2) + compass_percentage) * wl;
-      bottomLine.Y2 = 30;
-      bottomLine.Stroke = Brushes.White;
-      bottomLine.StrokeThickness = 1;
-      Canvas_HUD.Children.Add(bottomLine);
-
-      double horzPixelsPerDeg = wl * compass_percentage  / YAW_COMPASS_DEG_TO_DISP;
+      double wl = Grid_Compass.ActualWidth;
+ 
+      double horzPixelsPerDeg = wl / YAW_COMPASS_DEG_TO_DISP;
 
       double startYaw = yawDeg - (YAW_COMPASS_DEG_TO_DISP / 2.0);
       int roundedStart = (int)Math.Ceiling(startYaw);
 
       // this is the x co-ord of the left-most tick to be displayed displayed
-      double tickOffset = bottomLine.X1 + ((roundedStart - startYaw) * horzPixelsPerDeg);
-
+      double tickOffset = (roundedStart - startYaw) * horzPixelsPerDeg;
 
       for (int i = 0; i < YAW_COMPASS_DEG_TO_DISP; i++)
       {
@@ -292,7 +288,7 @@ namespace pilotHUD
             ticktext.Foreground = Brushes.White;
             Canvas.SetTop(ticktext, 2);
             Canvas.SetLeft(ticktext, tl.X1 - 10);
-            Canvas_HUD.Children.Add(ticktext);
+            Canvas_Compass.Children.Add(ticktext);
 
           }
           else
@@ -302,7 +298,7 @@ namespace pilotHUD
           tl.Y2 = 30;
           tl.Stroke = Brushes.White;
           tl.StrokeThickness = 1;
-          Canvas_HUD.Children.Add(tl);
+          Canvas_Compass.Children.Add(tl);
         }
       }
 
@@ -379,6 +375,7 @@ namespace pilotHUD
       Canvas_HUD_RollRotation.Children.Clear();
       Canvas_PitchIndicator.Children.Clear();
       Canvas_HUD.Children.Clear();
+      Canvas_Compass.Children.Clear();
 
       double pitchDeg = PitchAngle;
       if (pitchDeg == 90.0)
@@ -391,7 +388,7 @@ namespace pilotHUD
       }
 
       DrawGroundAndSky(pitchDeg);
-      DrawPitchTicks(pitchDeg);
+      DrawPitchTicks(pitchDeg, RollAngle);
       DrawCompass(YawAngle);
       DrawHeading(YawAngle);
 
