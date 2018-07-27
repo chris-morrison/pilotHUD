@@ -113,7 +113,7 @@ namespace pilotHUD
       ln.StrokeThickness = 2;
       Canvas.SetLeft(ln, -80);
       Canvas.SetTop(ln, -offset);
-      Canvas_HUD_RollRotation.Children.Add(ln);
+      Canvas_PitchIndicator.Children.Add(ln);
 
       if (val != 0)
       { 
@@ -142,8 +142,8 @@ namespace pilotHUD
           left.Y2 = -left.Y2;
           right.Y2 = -right.Y2;
         }
-        Canvas_HUD_RollRotation.Children.Add(left);
-        Canvas_HUD_RollRotation.Children.Add(right);
+        Canvas_PitchIndicator.Children.Add(left);
+        Canvas_PitchIndicator.Children.Add(right);
       }
 
       if (true == dispTxt)
@@ -157,7 +157,7 @@ namespace pilotHUD
         txtBlkL.FontWeight = FontWeights.Bold;
         Canvas.SetTop(txtBlkL, -offset - 13);
         Canvas.SetLeft(txtBlkL, -160);
-        Canvas_HUD_RollRotation.Children.Add(txtBlkL);
+        Canvas_PitchIndicator.Children.Add(txtBlkL);
 
         var txtBlkR = new BorderTextLabel();
         txtBlkR.Stroke = Brushes.DimGray;
@@ -168,7 +168,7 @@ namespace pilotHUD
         txtBlkR.FontWeight = FontWeights.Bold;
         Canvas.SetTop(txtBlkR, -offset - 13);
         Canvas.SetRight(txtBlkR, -160);
-        Canvas_HUD_RollRotation.Children.Add(txtBlkR);
+        Canvas_PitchIndicator.Children.Add(txtBlkR);
 
       }
 
@@ -185,7 +185,7 @@ namespace pilotHUD
       ln.StrokeThickness = 1;
       Canvas.SetLeft(ln, -40);
       Canvas.SetTop(ln, -offset);
-      Canvas_HUD_RollRotation.Children.Add(ln);
+      Canvas_PitchIndicator.Children.Add(ln);
 
       if (val != 0)
       {
@@ -214,8 +214,8 @@ namespace pilotHUD
           left.Y2 = -left.Y2;
           right.Y2 = -right.Y2;
         }
-        Canvas_HUD_RollRotation.Children.Add(left);
-        Canvas_HUD_RollRotation.Children.Add(right);
+        Canvas_PitchIndicator.Children.Add(left);
+        Canvas_PitchIndicator.Children.Add(right);
       }
     }
 
@@ -377,6 +377,7 @@ namespace pilotHUD
       base.OnRender(drawingContext);
 
       Canvas_HUD_RollRotation.Children.Clear();
+      Canvas_PitchIndicator.Children.Clear();
       Canvas_HUD.Children.Clear();
 
       double pitchDeg = PitchAngle;
@@ -395,6 +396,7 @@ namespace pilotHUD
       DrawHeading(YawAngle);
 
       Canvas_HUD_RollRotation.RenderTransform = new RotateTransform(-RollAngle);
+      Canvas_PitchIndicator.RenderTransform = new RotateTransform(-RollAngle);
 
 
     }

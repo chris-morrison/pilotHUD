@@ -14,6 +14,17 @@
           <Canvas Name="Canvas_HUD" HorizontalAlignment="Left" VerticalAlignment="Top"/>
         </Grid>
       </Border>
+
+      <Grid>
+        <Grid.RowDefinitions>
+          <RowDefinition Height="10*" />
+          <RowDefinition Height="90*" />
+        </Grid.RowDefinitions>
+        <Grid Name="Grid_PitchIndicator" Grid.Row="1" ClipToBounds="True">
+          <Canvas Name="Canvas_PitchIndicator" HorizontalAlignment="Center" VerticalAlignment="Center" />
+        </Grid>
+      </Grid>
+      
     </Grid>
   </Border>
 </UserControl>
