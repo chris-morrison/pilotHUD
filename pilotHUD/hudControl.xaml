@@ -8,10 +8,10 @@
              d:DesignHeight="300" d:DesignWidth="300">
   <Border>
     <Grid Name="Grid_Viewport" ClipToBounds="True">
-      <Canvas Name="Canvas_HUD_RollRotation" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+      <Canvas Name="Canvas_Background" HorizontalAlignment="Center" VerticalAlignment="Center"/>
       <Border BorderBrush="Black" BorderThickness="0" Background="Transparent" Visibility="Visible">
         <Grid>
-          <Canvas Name="Canvas_HUD" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+          <Canvas Name="Canvas_HUD" HorizontalAlignment="Center" VerticalAlignment="Center"/>
         </Grid>
       </Border>
 

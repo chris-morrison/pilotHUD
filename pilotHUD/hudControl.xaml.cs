@@ -53,7 +53,7 @@ namespace pilotHUD
     public static readonly DependencyProperty YawAngleProperty =
         DependencyProperty.Register("YawAngle", typeof(double), typeof(hudControl), new FrameworkPropertyMetadata((double)0, GestureChangedCallback));
 
-    private const int VERTICAL_DEG_TO_DISP = 26;
+    private const int VERTICAL_DEG_TO_DISP    = 26;
     private const int YAW_COMPASS_DEG_TO_DISP = 26;
 
     void DrawGroundAndSky(double pitchDeg)
@@ -97,8 +97,8 @@ namespace pilotHUD
       Canvas.SetLeft(skyRect, -maxDim);
       Canvas.SetBottom(skyRect, -offset);
 
-      Canvas_HUD_RollRotation.Children.Add(gndRect);
-      Canvas_HUD_RollRotation.Children.Add(skyRect);
+      Canvas_Background.Children.Add(gndRect);
+      Canvas_Background.Children.Add(skyRect);
 
     }
 
@@ -319,7 +319,7 @@ namespace pilotHUD
         yawInt = 0;
       }
 
-      double left = (Grid_Viewport.ActualWidth / 2) - 30;
+      double left = (Grid_Compass.ActualWidth / 2) - 30;
 
       string hdgStr = "HDG ";
       if (yawInt < 100)
@@ -346,56 +346,173 @@ namespace pilotHUD
       border.BorderBrush = new SolidColorBrush(Colors.White);
       Canvas.SetTop(border, 44);
       Canvas.SetLeft(border, left);
-      Canvas_HUD.Children.Add(border);
+      Canvas_Compass.Children.Add(border);
 
       Line leftLn = new Line();
-      leftLn.X1 = (Grid_Viewport.ActualWidth / 2) - 15;
-      leftLn.X2 = (Grid_Viewport.ActualWidth / 2);
+      leftLn.X1 = (Grid_Compass.ActualWidth / 2) - 15;
+      leftLn.X2 = (Grid_Compass.ActualWidth / 2);
       leftLn.Y1 = 44;
       leftLn.Y2 = 30;
       leftLn.Stroke = Brushes.White;
       leftLn.StrokeThickness = 1;
-      Canvas_HUD.Children.Add(leftLn);
+      Canvas_Compass.Children.Add(leftLn);
 
       Line rightLn = new Line();
-      rightLn.X1 = (Grid_Viewport.ActualWidth / 2) + 15;
-      rightLn.X2 = (Grid_Viewport.ActualWidth / 2);
+      rightLn.X1 = (Grid_Compass.ActualWidth / 2) + 15;
+      rightLn.X2 = (Grid_Compass.ActualWidth / 2);
       rightLn.Y1 = 44;
       rightLn.Y2 = 30;
       rightLn.Stroke = Brushes.White;
       rightLn.StrokeThickness = 1;
-      Canvas_HUD.Children.Add(rightLn);
+      Canvas_Compass.Children.Add(rightLn);
 
+    }
+
+    private void DrawRollTick(double circleRad, double rollAngle, bool isLarge)
+    {
+      Line line = new Line();
+      line.X1 = 0;
+      line.X2 = 0;
+      if (true == isLarge)
+      {
+        line.Y1 = -24;
+      }
+      else
+      {
+        line.Y1 = -12;
+      }
+      line.Y2 = 0;
+      line.Stroke = Brushes.White;
+      line.StrokeThickness = 2;
+      Canvas.SetTop(line, -circleRad);
+      line.RenderTransform = new RotateTransform(rollAngle, 0, circleRad);
+      Canvas_HUD.Children.Add(line);
+    }
+
+    private void DrawZeroRollTick(double circleRad)
+    {
+      Polygon triangle = new Polygon();
+      triangle.Stroke = Brushes.White;
+      triangle.Fill = Brushes.White;
+      triangle.StrokeThickness = 1;
+      triangle.HorizontalAlignment = HorizontalAlignment.Left;
+      triangle.VerticalAlignment = VerticalAlignment.Center;
+      Point Point1 = new Point(0, 0);
+      Point Point2 = new Point(12, -16);
+      Point Point3 = new Point(-12, -16);
+      PointCollection pc = new PointCollection();
+      pc.Add(Point1);
+      pc.Add(Point2);
+      pc.Add(Point3);
+      triangle.Points = pc;
+
+      Canvas.SetTop(triangle, -circleRad);
+      Canvas_HUD.Children.Add(triangle);
+    }
+
+    private void DrawRollIndicator(double circleRad, double rollAngle)
+    {
+      Polygon triangle = new Polygon();
+      triangle.Stroke = Brushes.White;
+      triangle.Fill = Brushes.White;
+      triangle.StrokeThickness = 1;
+      triangle.HorizontalAlignment = HorizontalAlignment.Left;
+      triangle.VerticalAlignment = VerticalAlignment.Center;
+      Point triP1 = new Point(0, 0);
+      Point triP2 = new Point(9, 12);
+      Point triP3 = new Point(-9, 12);
+      PointCollection pc = new PointCollection();
+      pc.Add(triP1);
+      pc.Add(triP2);
+      pc.Add(triP3);
+      triangle.Points = pc;
+
+      Polygon trapezoid = new Polygon();
+      trapezoid.Stroke = Brushes.White;
+      trapezoid.Fill = Brushes.White;
+      trapezoid.StrokeThickness = 1;
+      trapezoid.HorizontalAlignment = HorizontalAlignment.Left;
+      trapezoid.VerticalAlignment = VerticalAlignment.Center;
+      Point trapP1 = new Point(-12, 16);
+      Point trapP2 = new Point(12, 16);
+      Point trapP3 = new Point(15, 20);
+      Point trapP4 = new Point(-15, 20);
+      PointCollection pcTrap = new PointCollection();
+      pcTrap.Add(trapP1);
+      pcTrap.Add(trapP2);
+      pcTrap.Add(trapP3);
+      pcTrap.Add(trapP4);
+      trapezoid.Points = pcTrap;
+
+      triangle.RenderTransform = new RotateTransform(rollAngle, 0, circleRad);
+      trapezoid.RenderTransform = new RotateTransform(rollAngle, 0, circleRad);
+
+      Canvas.SetTop(triangle, -circleRad);
+      Canvas.SetTop(trapezoid, -circleRad);
+      Canvas_HUD.Children.Add(triangle);
+      Canvas_HUD.Children.Add(trapezoid);
+
+    }
+
+    private void DrawRoll(double rollAngle)
+    {
+      const double MAX_ROLL_ANGLE_TO_DISP = 60;
+      bool isLargeArc = MAX_ROLL_ANGLE_TO_DISP > 90;
+
+      double circleRad = Grid_Viewport.ActualHeight / 3;
+      Point startPoint = new Point(-circleRad * Math.Sin(MAX_ROLL_ANGLE_TO_DISP * Math.PI / 180), -circleRad * Math.Cos(MAX_ROLL_ANGLE_TO_DISP * Math.PI / 180));
+      Point endPoint = new Point(circleRad * Math.Sin(MAX_ROLL_ANGLE_TO_DISP * Math.PI / 180), -circleRad * Math.Cos(MAX_ROLL_ANGLE_TO_DISP * Math.PI / 180));
+      if (MAX_ROLL_ANGLE_TO_DISP == 180)
+      {
+        startPoint = new Point(-0.1, circleRad);
+        endPoint = new Point(0.1, circleRad);
+      }
+      ArcSegment arcpath = new ArcSegment(endPoint, new Size(circleRad, circleRad), 0, isLargeArc, SweepDirection.Clockwise, true);
+      PathGeometry geometry = new PathGeometry(new PathFigure[] { new PathFigure(startPoint, new PathSegment[] { arcpath }, false) });
+      Path cyclepath = new Path();
+      cyclepath.Data = geometry;
+      cyclepath.Stroke = Brushes.White;
+      cyclepath.StrokeThickness = 2;
+
+      List<KeyValuePair<double, bool>> tickList = new List<KeyValuePair<double, bool>>();
+      tickList.Add(new KeyValuePair<double, bool>(10, false));
+      tickList.Add(new KeyValuePair<double, bool>(20, false));
+      tickList.Add(new KeyValuePair<double, bool>(30, true));
+      tickList.Add(new KeyValuePair<double, bool>(45, false));
+      tickList.Add(new KeyValuePair<double, bool>(60, true));
+
+      DrawZeroRollTick(circleRad);
+      for (int i = 0; i < tickList.Count; i++)
+      {
+        DrawRollTick(circleRad, tickList[i].Key, tickList[i].Value);
+        DrawRollTick(circleRad, -tickList[i].Key, tickList[i].Value);
+      }
+
+      DrawRollIndicator(circleRad, rollAngle);
+
+      Canvas_HUD.Children.Add(cyclepath);
     }
 
     protected override void OnRender(DrawingContext drawingContext)
     {
       base.OnRender(drawingContext);
 
-      Canvas_HUD_RollRotation.Children.Clear();
+      Canvas_Background.Children.Clear();
       Canvas_PitchIndicator.Children.Clear();
       Canvas_HUD.Children.Clear();
       Canvas_Compass.Children.Clear();
 
-      double pitchDeg = PitchAngle;
-      if (pitchDeg == 90.0)
-      {
-        pitchDeg = 89.99;
-      }
-      else if (pitchDeg == -90.0)
-      {
-        pitchDeg = -89.99;
-      }
-
-      DrawGroundAndSky(pitchDeg);
-      DrawPitchTicks(pitchDeg, RollAngle);
+      DrawGroundAndSky(PitchAngle);
+      DrawPitchTicks(PitchAngle, RollAngle);
       DrawCompass(YawAngle);
       DrawHeading(YawAngle);
+      DrawRoll(RollAngle);
 
-      Canvas_HUD_RollRotation.RenderTransform = new RotateTransform(-RollAngle);
+      Canvas_Background.RenderTransform = new RotateTransform(-RollAngle);
       Canvas_PitchIndicator.RenderTransform = new RotateTransform(-RollAngle);
 
 
     }
+
   }
 }
