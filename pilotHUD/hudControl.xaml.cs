@@ -456,23 +456,7 @@ namespace pilotHUD
 
     private void DrawRoll(double rollAngle)
     {
-      const double MAX_ROLL_ANGLE_TO_DISP = 60;
-      bool isLargeArc = MAX_ROLL_ANGLE_TO_DISP > 90;
-
       double circleRad = Grid_Viewport.ActualHeight / 3;
-      Point startPoint = new Point(-circleRad * Math.Sin(MAX_ROLL_ANGLE_TO_DISP * Math.PI / 180), -circleRad * Math.Cos(MAX_ROLL_ANGLE_TO_DISP * Math.PI / 180));
-      Point endPoint = new Point(circleRad * Math.Sin(MAX_ROLL_ANGLE_TO_DISP * Math.PI / 180), -circleRad * Math.Cos(MAX_ROLL_ANGLE_TO_DISP * Math.PI / 180));
-      if (MAX_ROLL_ANGLE_TO_DISP == 180)
-      {
-        startPoint = new Point(-0.1, circleRad);
-        endPoint = new Point(0.1, circleRad);
-      }
-      ArcSegment arcpath = new ArcSegment(endPoint, new Size(circleRad, circleRad), 0, isLargeArc, SweepDirection.Clockwise, true);
-      PathGeometry geometry = new PathGeometry(new PathFigure[] { new PathFigure(startPoint, new PathSegment[] { arcpath }, false) });
-      Path cyclepath = new Path();
-      cyclepath.Data = geometry;
-      cyclepath.Stroke = Brushes.White;
-      cyclepath.StrokeThickness = 2;
 
       List<KeyValuePair<double, bool>> tickList = new List<KeyValuePair<double, bool>>();
       tickList.Add(new KeyValuePair<double, bool>(10, false));
@@ -489,8 +473,6 @@ namespace pilotHUD
       }
 
       DrawRollIndicator(circleRad, rollAngle);
-
-      Canvas_HUD.Children.Add(cyclepath);
     }
 
     protected override void OnRender(DrawingContext drawingContext)
