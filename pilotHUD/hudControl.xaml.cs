@@ -81,24 +81,50 @@ namespace pilotHUD
       const double OVERSIZE_RATIO = 5;
       double rectDimension = maxDim * OVERSIZE_RATIO;
 
+      LinearGradientBrush gndGradBrush =
+    new LinearGradientBrush();
+      gndGradBrush.StartPoint = new Point(0, 0);
+      gndGradBrush.EndPoint = new Point(0, 1);
+      gndGradBrush.GradientStops.Add(
+          new GradientStop(Color.FromRgb(173, 104, 13), 0.0));
+      gndGradBrush.GradientStops.Add(
+          new GradientStop(Color.FromRgb(247, 147, 17), 0.25));
+
+      LinearGradientBrush skyGradBrush =
+    new LinearGradientBrush();
+      skyGradBrush.StartPoint = new Point(0, 0);
+      skyGradBrush.EndPoint = new Point(0, 1);
+      skyGradBrush.GradientStops.Add(
+          new GradientStop(Color.FromRgb(3, 84, 196), 0.75));
+      skyGradBrush.GradientStops.Add(
+          new GradientStop(Color.FromRgb(2, 147, 247), 1));
+
       var gndRect = new Rectangle();
-      gndRect.Stroke = new SolidColorBrush(Colors.Orange);
-      gndRect.Fill = new SolidColorBrush(Colors.Orange);
+      gndRect.Fill = gndGradBrush;
       gndRect.Width = rectDimension;
       gndRect.Height = rectDimension;
       Canvas.SetLeft(gndRect, -maxDim);
       Canvas.SetTop(gndRect, offset);
 
       var skyRect = new Rectangle();
-      skyRect.Stroke = new SolidColorBrush(Colors.Blue);
-      skyRect.Fill = new SolidColorBrush(Colors.Blue);
+      skyRect.Fill = skyGradBrush;
       skyRect.Width = rectDimension;
       skyRect.Height = rectDimension;
       Canvas.SetLeft(skyRect, -maxDim);
       Canvas.SetBottom(skyRect, -offset);
 
+      var line = new Line();
+      line.X1 = -rectDimension;
+      line.X2 = rectDimension;
+      line.Y1 = offset;
+      line.Y2 = offset;
+      line.Stroke = Brushes.White;
+      line.StrokeThickness = 2;
+
+
       Canvas_Background.Children.Add(gndRect);
       Canvas_Background.Children.Add(skyRect);
+      Canvas_Background.Children.Add(line);
 
     }
 
@@ -231,8 +257,6 @@ namespace pilotHUD
         Math.Cos(rollAngle * Math.PI / 180.0);
 
       zeroOffset += gridOffset;
-
-      DrawMajorPitchTick(zeroOffset, 0, false);
 
       for (int i = 1; i < 10; i++)
       {
