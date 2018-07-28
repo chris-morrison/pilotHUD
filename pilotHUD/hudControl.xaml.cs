@@ -525,8 +525,6 @@ namespace pilotHUD
 
       waterline.Points = pc;
       Canvas_HUD.Children.Add(waterline);
-
-
     }
 
     protected override void OnRender(DrawingContext drawingContext)
@@ -547,8 +545,6 @@ namespace pilotHUD
 
       Canvas_Background.RenderTransform = new RotateTransform(-RollAngle);
       Canvas_PitchIndicator.RenderTransform = new RotateTransform(-RollAngle);
-
-
     }
 
   }
