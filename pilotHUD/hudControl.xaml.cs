@@ -475,6 +475,36 @@ namespace pilotHUD
       DrawRollIndicator(circleRad, rollAngle);
     }
 
+    private void DrawAircraft()
+    {
+      double segmentLength = 12;
+      Polyline waterline = new Polyline();
+      waterline.Stroke = Brushes.White;
+      waterline.StrokeThickness = 2;
+
+      Point p1 = new Point(-4 * segmentLength, 0);
+      Point p2 = new Point(-2 * segmentLength, 0);
+      Point p3 = new Point(-segmentLength, segmentLength);
+      Point p4 = new Point(0, 0);
+      Point p5 = new Point(segmentLength, segmentLength);
+      Point p6 = new Point(2 * segmentLength, 0);
+      Point p7 = new Point(4 * segmentLength, 0);
+
+      PointCollection pc = new PointCollection();
+      pc.Add(p1);
+      pc.Add(p2);
+      pc.Add(p3);
+      pc.Add(p4);
+      pc.Add(p5);
+      pc.Add(p6);
+      pc.Add(p7);
+
+      waterline.Points = pc;
+      Canvas_HUD.Children.Add(waterline);
+
+
+    }
+
     protected override void OnRender(DrawingContext drawingContext)
     {
       base.OnRender(drawingContext);
@@ -489,6 +519,7 @@ namespace pilotHUD
       DrawCompass(YawAngle);
       DrawHeading(YawAngle);
       DrawRoll(RollAngle);
+      DrawAircraft();
 
       Canvas_Background.RenderTransform = new RotateTransform(-RollAngle);
       Canvas_PitchIndicator.RenderTransform = new RotateTransform(-RollAngle);
