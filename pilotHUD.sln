@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.26730.12
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "pilotHUD", "pilotHUD\pilotHUD.csproj", "{60412E99-A89A-416C-AD1E-08742908B23C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "pilotHUD_Sample", "pilotHUD_Sample\pilotHUD_Sample.csproj", "{B4967305-C5E1-43A0-8B7E-FEF527986C17}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{60412E99-A89A-416C-AD1E-08742908B23C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{60412E99-A89A-416C-AD1E-08742908B23C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{60412E99-A89A-416C-AD1E-08742908B23C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B4967305-C5E1-43A0-8B7E-FEF527986C17}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B4967305-C5E1-43A0-8B7E-FEF527986C17}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B4967305-C5E1-43A0-8B7E-FEF527986C17}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B4967305-C5E1-43A0-8B7E-FEF527986C17}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

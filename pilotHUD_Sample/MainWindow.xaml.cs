@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace pilotHUD
+namespace pilotHUD_Sample
 {
   /// <summary>
   /// Interaction logic for MainWindow.xaml

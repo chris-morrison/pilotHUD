@@ -1,7 +1,7 @@
-﻿<Application x:Class="pilotHUD.App"
+﻿<Application x:Class="pilotHUD_Sample.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:pilotHUD"
+             xmlns:local="clr-namespace:pilotHUD_Sample"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
          

@@ -1,9 +1,10 @@
-﻿<Window x:Class="pilotHUD.MainWindow"
+﻿<Window x:Class="pilotHUD_Sample.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:pilotHUD"
+        xmlns:local="clr-namespace:pilotHUD_Sample"
+        xmlns:pilotHUD="clr-namespace:pilotHUD;assembly=pilotHUD"
         mc:Ignorable="d"
         Title="HUD" Height="800" Width="1200">
   <Grid>
@@ -11,7 +12,7 @@
       <ColumnDefinition/>
       <ColumnDefinition Width="Auto"/>
     </Grid.ColumnDefinitions>
-    <local:hudControl RollAngle="{Binding ElementName=Slider_Roll,Path=Value}" PitchAngle="{Binding ElementName=Slider_Pitch,Path=Value}" YawAngle="{Binding ElementName=Slider_Yaw,Path=Value}"/>
+    <pilotHUD:hudControl RollAngle="{Binding ElementName=Slider_Roll,Path=Value}" PitchAngle="{Binding ElementName=Slider_Pitch,Path=Value}" YawAngle="{Binding ElementName=Slider_Yaw,Path=Value}"/>
     <Border Grid.Column="1">
       <Grid Width="300" Margin="5">
         <Grid.ColumnDefinitions>
