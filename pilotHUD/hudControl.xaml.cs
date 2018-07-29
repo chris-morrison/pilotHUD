@@ -53,7 +53,7 @@ namespace pilotHUD
     public static readonly DependencyProperty YawAngleProperty =
         DependencyProperty.Register("YawAngle", typeof(double), typeof(hudControl), new FrameworkPropertyMetadata((double)0, GestureChangedCallback));
 
-    private const int VERTICAL_DEG_TO_DISP    = 26;
+    private const int VERTICAL_DEG_TO_DISP    = 36;
     private const int YAW_COMPASS_DEG_TO_DISP = 26;
 
     void DrawGroundAndSky(double pitchDeg)
@@ -130,16 +130,27 @@ namespace pilotHUD
 
     private void DrawMajorPitchTick(double offset, double val, bool dispTxt)
     {
-      Line ln = new Line();
-      ln.X1 = 0;
-      ln.X2 = 160;
-      ln.Y1 = 0;
-      ln.Y2 = 0;
-      ln.Stroke = Brushes.White;
-      ln.StrokeThickness = 2;
-      Canvas.SetLeft(ln, -80);
-      Canvas.SetTop(ln, -offset);
-      Canvas_PitchIndicator.Children.Add(ln);
+      Line lnL = new Line();
+      lnL.X1 = 0;
+      lnL.X2 = 40;
+      lnL.Y1 = 0;
+      lnL.Y2 = 0;
+      lnL.Stroke = Brushes.White;
+      lnL.StrokeThickness = 2;
+      Canvas.SetLeft(lnL, -80);
+      Canvas.SetTop(lnL, -offset);
+      Canvas_PitchIndicator.Children.Add(lnL);
+
+      Line lnR = new Line();
+      lnR.X1 = 0;
+      lnR.X2 = 40;
+      lnR.Y1 = 0;
+      lnR.Y2 = 0;
+      lnR.Stroke = Brushes.White;
+      lnR.StrokeThickness = 2;
+      Canvas.SetLeft(lnR, 40);
+      Canvas.SetTop(lnR, -offset);
+      Canvas_PitchIndicator.Children.Add(lnR);
 
       if (val != 0)
       { 
@@ -182,7 +193,7 @@ namespace pilotHUD
         txtBlkL.FontSize = 16;
         txtBlkL.FontWeight = FontWeights.Bold;
         Canvas.SetTop(txtBlkL, -offset - 13);
-        Canvas.SetLeft(txtBlkL, -160);
+        Canvas.SetLeft(txtBlkL, -120);
         Canvas_PitchIndicator.Children.Add(txtBlkL);
 
         var txtBlkR = new BorderTextLabel();
@@ -193,7 +204,7 @@ namespace pilotHUD
         txtBlkR.FontSize = 16;
         txtBlkR.FontWeight = FontWeights.Bold;
         Canvas.SetTop(txtBlkR, -offset - 13);
-        Canvas.SetRight(txtBlkR, -160);
+        Canvas.SetRight(txtBlkR, -120);
         Canvas_PitchIndicator.Children.Add(txtBlkR);
 
       }
@@ -202,16 +213,27 @@ namespace pilotHUD
 
     private void DrawMinorPitchTick(double offset, double val)
     {
-      Line ln = new Line();
-      ln.X1 = 0;
-      ln.X2 = 80;
-      ln.Y1 = 0;
-      ln.Y2 = 0;
-      ln.Stroke = Brushes.White;
-      ln.StrokeThickness = 1;
-      Canvas.SetLeft(ln, -40);
-      Canvas.SetTop(ln, -offset);
-      Canvas_PitchIndicator.Children.Add(ln);
+      Line lnL = new Line();
+      lnL.X1 = 0;
+      lnL.X2 = 25;
+      lnL.Y1 = 0;
+      lnL.Y2 = 0;
+      lnL.Stroke = Brushes.White;
+      lnL.StrokeThickness = 1;
+      Canvas.SetLeft(lnL, -60);
+      Canvas.SetTop(lnL, -offset);
+      Canvas_PitchIndicator.Children.Add(lnL);
+
+      Line lnR = new Line();
+      lnR.X1 = 0;
+      lnR.X2 = 25;
+      lnR.Y1 = 0;
+      lnR.Y2 = 0;
+      lnR.Stroke = Brushes.White;
+      lnR.StrokeThickness = 1;
+      Canvas.SetLeft(lnR, 35);
+      Canvas.SetTop(lnR, -offset);
+      Canvas_PitchIndicator.Children.Add(lnR);
 
       if (val != 0)
       {
@@ -222,7 +244,7 @@ namespace pilotHUD
         left.Y2 = 5;
         left.Stroke = Brushes.White;
         left.StrokeThickness = 1;
-        Canvas.SetLeft(left, -40);
+        Canvas.SetLeft(left, -60);
         Canvas.SetTop(left, -offset);
 
         Line right = new Line();
@@ -232,7 +254,7 @@ namespace pilotHUD
         right.Y2 = 5;
         right.Stroke = Brushes.White;
         right.StrokeThickness = 1;
-        Canvas.SetRight(right, -40);
+        Canvas.SetRight(right, -60);
         Canvas.SetTop(right, -offset);
 
         if (val < 0)
@@ -501,7 +523,7 @@ namespace pilotHUD
 
     private void DrawAircraft()
     {
-      double segmentLength = 12;
+      double segmentLength = 6;
       Polyline waterline = new Polyline();
       waterline.Stroke = Brushes.White;
       waterline.StrokeThickness = 2;
