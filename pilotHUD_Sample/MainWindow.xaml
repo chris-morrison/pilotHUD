@@ -12,14 +12,20 @@
       <ColumnDefinition/>
       <ColumnDefinition Width="Auto"/>
     </Grid.ColumnDefinitions>
-    <pilotHUD:hudControl RollAngle="{Binding ElementName=Slider_Roll,Path=Value}" PitchAngle="{Binding ElementName=Slider_Pitch,Path=Value}" YawAngle="{Binding ElementName=Slider_Yaw,Path=Value}"/>
+    <pilotHUD:hudControl RollAngle="{Binding ElementName=Slider_Roll,Path=Value}" 
+                         PitchAngle="{Binding ElementName=Slider_Pitch,Path=Value}" 
+                         YawAngle="{Binding ElementName=Slider_Yaw,Path=Value}"
+                         ClimbRate="{Binding ElementName=Slider_ClimbRate,Path=Value}"
+                         MaxClimbRateArrowMag="{Binding ElementName=Slider_MaxClimbArrMag,Path=Value}"/>
     <Border Grid.Column="1">
       <Grid Width="300" Margin="5">
         <Grid.ColumnDefinitions>
-          <ColumnDefinition Width="50"/>
+          <ColumnDefinition Width="70"/>
           <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
+          <RowDefinition Height="40"/>
+          <RowDefinition Height="40"/>
           <RowDefinition Height="40"/>
           <RowDefinition Height="40"/>
           <RowDefinition Height="40"/>
@@ -31,7 +37,10 @@
         <Slider Name="Slider_Pitch" Grid.Column="1" Grid.Row="1" Minimum="-90" Maximum="90" Value="0" TickFrequency="10" TickPlacement="BottomRight"  VerticalAlignment="Center"/>
         <TextBlock Text="Roll" VerticalAlignment="Center" Grid.Row="2"/>
         <Slider Name="Slider_Roll" Grid.Column="1" Grid.Row="2" Minimum="-180" Maximum="180" Value="0" TickFrequency="20" TickPlacement="BottomRight"  VerticalAlignment="Center"/>
-
+        <TextBlock Text="Climb rate" VerticalAlignment="Center" Grid.Row="3"/>
+        <Slider Name="Slider_ClimbRate" Grid.Column="1" Grid.Row="3" Minimum="-100" Maximum="100" Value="0" TickFrequency="10" TickPlacement="BottomRight"  VerticalAlignment="Center"/>
+        <TextBlock Text="Max Arr Mag" VerticalAlignment="Center" Grid.Row="4"/>
+        <Slider Name="Slider_MaxClimbArrMag" Grid.Column="1" Grid.Row="4" Minimum="0" Maximum="100" Value="50" TickFrequency="5" TickPlacement="BottomRight"  VerticalAlignment="Center"/>
       </Grid>
     </Border>
   </Grid>

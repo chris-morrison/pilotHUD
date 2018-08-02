@@ -22,6 +22,7 @@ namespace pilotHUD
   {
     public hudControl()
     {
+      MaxClimbRateArrowMag = 50;
       InitializeComponent();
     }
     private static void GestureChangedCallback(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -44,6 +45,28 @@ namespace pilotHUD
     }
     public static readonly DependencyProperty PitchAngleProperty =
         DependencyProperty.Register("PitchAngle", typeof(double), typeof(hudControl), new FrameworkPropertyMetadata((double)0, GestureChangedCallback));
+
+    public double ClimbRate
+    {
+      get { return (double)GetValue(ClimbRateProperty); }
+      set { SetValue(ClimbRateProperty, value); }
+    }
+    public static readonly DependencyProperty ClimbRateProperty =
+        DependencyProperty.Register("ClimbRate", typeof(double), typeof(hudControl), new FrameworkPropertyMetadata((double)0, GestureChangedCallback));
+
+    public double MaxClimbRateArrowMag
+    {
+      get { return (double)GetValue(MaxClimbRateArrowMagProperty); }
+      set
+      {
+        if (value > 0)
+        {
+          SetValue(MaxClimbRateArrowMagProperty, value);
+        }
+      }
+    }
+    public static readonly DependencyProperty MaxClimbRateArrowMagProperty =
+        DependencyProperty.Register("MaxClimbRateArrowMag", typeof(double), typeof(hudControl), new FrameworkPropertyMetadata((double)0, GestureChangedCallback));
 
     public double YawAngle
     {
@@ -437,20 +460,7 @@ namespace pilotHUD
 
     private void DrawZeroRollTick(double circleRad)
     {
-      Polygon triangle = new Polygon();
-      triangle.Stroke = Brushes.White;
-      triangle.Fill = Brushes.White;
-      triangle.StrokeThickness = 1;
-      triangle.HorizontalAlignment = HorizontalAlignment.Left;
-      triangle.VerticalAlignment = VerticalAlignment.Center;
-      Point Point1 = new Point(0, 0);
-      Point Point2 = new Point(12, -16);
-      Point Point3 = new Point(-12, -16);
-      PointCollection pc = new PointCollection();
-      pc.Add(Point1);
-      pc.Add(Point2);
-      pc.Add(Point3);
-      triangle.Points = pc;
+      Polygon triangle = CreateTriangle(0, 0, 12, -16, -12, -16);
 
       Canvas.SetTop(triangle, -circleRad);
       Canvas_HUD.Children.Add(triangle);
@@ -458,20 +468,7 @@ namespace pilotHUD
 
     private void DrawRollIndicator(double circleRad, double rollAngle)
     {
-      Polygon triangle = new Polygon();
-      triangle.Stroke = Brushes.White;
-      triangle.Fill = Brushes.White;
-      triangle.StrokeThickness = 1;
-      triangle.HorizontalAlignment = HorizontalAlignment.Left;
-      triangle.VerticalAlignment = VerticalAlignment.Center;
-      Point triP1 = new Point(0, 0);
-      Point triP2 = new Point(9, 12);
-      Point triP3 = new Point(-9, 12);
-      PointCollection pc = new PointCollection();
-      pc.Add(triP1);
-      pc.Add(triP2);
-      pc.Add(triP3);
-      triangle.Points = pc;
+      Polygon triangle = CreateTriangle(0, 0, 9, 12, -9, 12);
 
       Polygon trapezoid = new Polygon();
       trapezoid.Stroke = Brushes.White;
@@ -521,6 +518,82 @@ namespace pilotHUD
       DrawRollIndicator(circleRad, rollAngle);
     }
 
+    private void DrawClimbRate(double climbRate)
+    {
+      var txtBlkL = new BorderTextLabel();
+      txtBlkL.Stroke = Brushes.White;
+      txtBlkL.Text = "VERT\n" + climbRate.ToString("+0.0;-0.0;0.0");
+      txtBlkL.Foreground = Brushes.White;
+      txtBlkL.FontSize = 20;
+      txtBlkL.FontWeight = FontWeights.Bold;
+      Canvas.SetTop(txtBlkL, -25);
+      Canvas_RightHUD.Children.Add(txtBlkL);
+
+      Line zeroLn = new Line();
+      zeroLn.X1 = -10;
+      zeroLn.X2 = -40;
+      zeroLn.Y1 = 0;
+      zeroLn.Y2 = 00;
+      zeroLn.Stroke = Brushes.White;
+      zeroLn.StrokeThickness = 1;
+      Canvas_RightHUD.Children.Add(zeroLn);
+
+      double maxHUD_Height = Grid_RightHUD.ActualHeight * 0.7;
+
+      double magHeight = Math.Abs(climbRate);
+      if (magHeight > MaxClimbRateArrowMag)
+      {
+        magHeight = MaxClimbRateArrowMag;
+      }
+
+      Rectangle climbMagnitude = new Rectangle();
+      climbMagnitude.Fill = Brushes.White;
+      climbMagnitude.Width = 12;
+      climbMagnitude.Height = maxHUD_Height * (magHeight / (2 * MaxClimbRateArrowMag));
+      Canvas.SetLeft(climbMagnitude, -31);
+
+      Polygon triangle = CreateTriangle(-9, 0, 9, 0, 0, 12);
+      Canvas.SetLeft(triangle, -25);
+
+      if (climbRate > 0)
+      {
+        Canvas.SetTop(climbMagnitude, -climbMagnitude.Height);
+        Canvas.SetTop(triangle, -climbMagnitude.Height);
+        triangle.RenderTransform = new RotateTransform(180);
+      }
+      else
+      {
+        Canvas.SetTop(triangle, climbMagnitude.Height);
+      }
+
+      if (Math.Abs(climbRate) > 1.0)
+      {
+        // don't draw flickering arrow if bouncing around near 0
+        Canvas_RightHUD.Children.Add(triangle);
+      }
+      Canvas_RightHUD.Children.Add(climbMagnitude);
+    }
+
+    private Polygon CreateTriangle(double x1, double y1, double x2, double y2, double x3, double y3)
+    {
+      Polygon triangle = new Polygon();
+      triangle.Stroke = Brushes.White;
+      triangle.Fill = Brushes.White;
+      triangle.StrokeThickness = 1;
+      triangle.HorizontalAlignment = HorizontalAlignment.Left;
+      triangle.VerticalAlignment = VerticalAlignment.Center;
+      Point triP1 = new Point(x1, y1);
+      Point triP2 = new Point(x2, y2);
+      Point triP3 = new Point(x3, y3);
+      PointCollection pc = new PointCollection();
+      pc.Add(triP1);
+      pc.Add(triP2);
+      pc.Add(triP3);
+      triangle.Points = pc;
+
+      return triangle;
+    }
+
     private void DrawAircraft()
     {
       double segmentLength = 6;
@@ -557,17 +630,19 @@ namespace pilotHUD
       Canvas_PitchIndicator.Children.Clear();
       Canvas_HUD.Children.Clear();
       Canvas_Compass.Children.Clear();
+      Canvas_RightHUD.Children.Clear();
 
       DrawGroundAndSky(PitchAngle);
       DrawPitchTicks(PitchAngle, RollAngle);
       DrawCompass(YawAngle);
       DrawHeading(YawAngle);
       DrawRoll(RollAngle);
+      DrawClimbRate(ClimbRate);
       DrawAircraft();
 
       Canvas_Background.RenderTransform = new RotateTransform(-RollAngle);
       Canvas_PitchIndicator.RenderTransform = new RotateTransform(-RollAngle);
     }
-
+       
   }
 }

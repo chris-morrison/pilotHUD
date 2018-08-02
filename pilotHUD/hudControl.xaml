@@ -12,9 +12,18 @@
       <Border BorderBrush="Black" BorderThickness="0" Background="Transparent" Visibility="Visible">
         <Grid>
           <Canvas Name="Canvas_HUD" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+          <Grid>
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="1*" />
+              <ColumnDefinition Width="2*" />
+              <ColumnDefinition Width="1*" />
+            </Grid.ColumnDefinitions>
+            <Grid Name="Grid_RightHUD" Grid.Column="2" ClipToBounds="True">
+              <Canvas Name="Canvas_RightHUD" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            </Grid>
+          </Grid>
         </Grid>
       </Border>
-
       <Grid>
         <Grid.RowDefinitions>
           <RowDefinition Height="10*" />
@@ -34,7 +43,6 @@
           <Canvas Name="Canvas_PitchIndicator" HorizontalAlignment="Center" VerticalAlignment="Center" />
         </Grid>
       </Grid>
-      
     </Grid>
   </Border>
 </UserControl>
