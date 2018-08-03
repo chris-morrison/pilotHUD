@@ -76,6 +76,30 @@ namespace pilotHUD
     public static readonly DependencyProperty YawAngleProperty =
         DependencyProperty.Register("YawAngle", typeof(double), typeof(hudControl), new FrameworkPropertyMetadata((double)0, GestureChangedCallback));
 
+    public double Mach
+    {
+      get { return (double)GetValue(MachProperty); }
+      set { SetValue(MachProperty, value); }
+    }
+    public static readonly DependencyProperty MachProperty =
+        DependencyProperty.Register("Mach", typeof(double), typeof(hudControl), new FrameworkPropertyMetadata((double)0, GestureChangedCallback));
+
+    public double G_Load
+    {
+      get { return (double)GetValue(G_LoadProperty); }
+      set { SetValue(G_LoadProperty, value); }
+    }
+    public static readonly DependencyProperty G_LoadProperty =
+        DependencyProperty.Register("G_Load", typeof(double), typeof(hudControl), new FrameworkPropertyMetadata((double)0, GestureChangedCallback));
+
+    public double SpeedMs
+    {
+      get { return (double)GetValue(SpeedMsProperty); }
+      set { SetValue(SpeedMsProperty, value); }
+    }
+    public static readonly DependencyProperty SpeedMsProperty =
+        DependencyProperty.Register("SpeedMs", typeof(double), typeof(hudControl), new FrameworkPropertyMetadata((double)0, GestureChangedCallback));
+
     private const int VERTICAL_DEG_TO_DISP    = 36;
     private const int YAW_COMPASS_DEG_TO_DISP = 26;
 
@@ -520,14 +544,13 @@ namespace pilotHUD
 
     private void DrawClimbRate(double climbRate)
     {
-      var txtBlkL = new BorderTextLabel();
-      txtBlkL.Stroke = Brushes.White;
-      txtBlkL.Text = "VERT\n" + climbRate.ToString("+0.0;-0.0;0.0");
-      txtBlkL.Foreground = Brushes.White;
-      txtBlkL.FontSize = 20;
-      txtBlkL.FontWeight = FontWeights.Bold;
-      Canvas.SetTop(txtBlkL, -25);
-      Canvas_RightHUD.Children.Add(txtBlkL);
+      var txtBlk = new BorderTextLabel();
+      txtBlk.Stroke = Brushes.White;
+      txtBlk.Text = "VERT\n" + climbRate.ToString("+0.0;-0.0;0.0");
+      txtBlk.Foreground = Brushes.White;
+      txtBlk.FontSize = 20;
+      Canvas.SetTop(txtBlk, -25);
+      Canvas_RightHUD.Children.Add(txtBlk);
 
       Line zeroLn = new Line();
       zeroLn.X1 = -10;
@@ -572,6 +595,28 @@ namespace pilotHUD
         Canvas_RightHUD.Children.Add(triangle);
       }
       Canvas_RightHUD.Children.Add(climbMagnitude);
+    }
+
+    private void DrawSpeedAndG(double speed_ms, double mach, double gLoad)
+    {
+      var txtBlkGM = new BorderTextLabel();
+      txtBlkGM.Stroke = Brushes.White;
+      txtBlkGM.Text = "G  " + gLoad.ToString("+0.0;-0.0;0.0") + "\n" +
+        "M  " + mach.ToString("0.00");
+      txtBlkGM.Foreground = Brushes.White;
+      txtBlkGM.FontSize = 20;
+      Canvas.SetTop(txtBlkGM, -50);
+      Canvas.SetLeft(txtBlkGM, -50);
+      Canvas_LeftHUD.Children.Add(txtBlkGM);
+
+      var txtBlkSpd = new BorderTextLabel();
+      txtBlkSpd.Stroke = Brushes.White;
+      txtBlkSpd.Text = "SPEED\nm/s    " + speed_ms.ToString("0");
+      txtBlkSpd.Foreground = Brushes.White;
+      txtBlkSpd.FontSize = 16;
+      Canvas.SetTop(txtBlkSpd, -200);
+      Canvas.SetLeft(txtBlkSpd, -50);
+      Canvas_LeftHUD.Children.Add(txtBlkSpd);
     }
 
     private Polygon CreateTriangle(double x1, double y1, double x2, double y2, double x3, double y3)
@@ -631,6 +676,7 @@ namespace pilotHUD
       Canvas_HUD.Children.Clear();
       Canvas_Compass.Children.Clear();
       Canvas_RightHUD.Children.Clear();
+      Canvas_LeftHUD.Children.Clear();
 
       DrawGroundAndSky(PitchAngle);
       DrawPitchTicks(PitchAngle, RollAngle);
@@ -638,11 +684,12 @@ namespace pilotHUD
       DrawHeading(YawAngle);
       DrawRoll(RollAngle);
       DrawClimbRate(ClimbRate);
+      DrawSpeedAndG(SpeedMs, Mach, G_Load);
       DrawAircraft();
 
       Canvas_Background.RenderTransform = new RotateTransform(-RollAngle);
       Canvas_PitchIndicator.RenderTransform = new RotateTransform(-RollAngle);
     }
-       
+
   }
 }

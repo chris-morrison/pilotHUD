@@ -16,7 +16,10 @@
                          PitchAngle="{Binding ElementName=Slider_Pitch,Path=Value}" 
                          YawAngle="{Binding ElementName=Slider_Yaw,Path=Value}"
                          ClimbRate="{Binding ElementName=Slider_ClimbRate,Path=Value}"
-                         MaxClimbRateArrowMag="{Binding ElementName=Slider_MaxClimbArrMag,Path=Value}"/>
+                         MaxClimbRateArrowMag="{Binding ElementName=Slider_MaxClimbArrMag,Path=Value}"
+                         SpeedMs="{Binding ElementName=Slider_SpeedMs,Path=Value}"
+                         Mach="{Binding ElementName=Slider_Mach,Path=Value}"
+                         G_Load="{Binding ElementName=Slider_G,Path=Value}"/>
     <Border Grid.Column="1">
       <Grid Width="300" Margin="5">
         <Grid.ColumnDefinitions>
@@ -24,6 +27,9 @@
           <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
+          <RowDefinition Height="40"/>
+          <RowDefinition Height="40"/>
+          <RowDefinition Height="40"/>
           <RowDefinition Height="40"/>
           <RowDefinition Height="40"/>
           <RowDefinition Height="40"/>
@@ -41,6 +47,12 @@
         <Slider Name="Slider_ClimbRate" Grid.Column="1" Grid.Row="3" Minimum="-100" Maximum="100" Value="0" TickFrequency="10" TickPlacement="BottomRight"  VerticalAlignment="Center"/>
         <TextBlock Text="Max Arr Mag" VerticalAlignment="Center" Grid.Row="4"/>
         <Slider Name="Slider_MaxClimbArrMag" Grid.Column="1" Grid.Row="4" Minimum="0" Maximum="100" Value="50" TickFrequency="5" TickPlacement="BottomRight"  VerticalAlignment="Center"/>
+        <TextBlock Text="Speed (m/s)" VerticalAlignment="Center" Grid.Row="5"/>
+        <Slider Name="Slider_SpeedMs" Grid.Column="1" Grid.Row="5" Minimum="0" Maximum="700" Value="0" TickFrequency="35" TickPlacement="BottomRight"  VerticalAlignment="Center"/>
+        <TextBlock Text="Mach" VerticalAlignment="Center" Grid.Row="6"/>
+        <Slider Name="Slider_Mach" Grid.Column="1" Grid.Row="6" Minimum="0" Maximum="2" Value="0" TickFrequency="0.1" TickPlacement="BottomRight"  VerticalAlignment="Center"/>
+        <TextBlock Text="G" VerticalAlignment="Center" Grid.Row="7"/>
+        <Slider Name="Slider_G" Grid.Column="1" Grid.Row="7" Minimum="-10" Maximum="10" Value="0" TickFrequency="1" TickPlacement="BottomRight"  VerticalAlignment="Center"/>
       </Grid>
     </Border>
   </Grid>
