@@ -100,7 +100,24 @@ namespace pilotHUD
     public static readonly DependencyProperty SpeedMsProperty =
         DependencyProperty.Register("SpeedMs", typeof(double), typeof(hudControl), new FrameworkPropertyMetadata((double)0, GestureChangedCallback));
 
+    public double Alpha
+    {
+      get { return (double)GetValue(AlphaProperty); }
+      set { SetValue(AlphaProperty, value); }
+    }
+    public static readonly DependencyProperty AlphaProperty =
+        DependencyProperty.Register("Alpha", typeof(double), typeof(hudControl), new FrameworkPropertyMetadata((double)0, GestureChangedCallback));
+
+    public double Beta
+    {
+      get { return (double)GetValue(BetaProperty); }
+      set { SetValue(BetaProperty, value); }
+    }
+    public static readonly DependencyProperty BetaProperty =
+        DependencyProperty.Register("Beta", typeof(double), typeof(hudControl), new FrameworkPropertyMetadata((double)0, GestureChangedCallback));
+
     private const int VERTICAL_DEG_TO_DISP    = 36;
+    private const int HORIZONTAL_DEG_TO_DISP  = 45;
     private const int YAW_COMPASS_DEG_TO_DISP = 26;
 
     void DrawGroundAndSky(double pitchDeg)
@@ -667,6 +684,75 @@ namespace pilotHUD
       Canvas_HUD.Children.Add(waterline);
     }
 
+    private void DrawFlightPathMarker(double alpha, double beta)
+    {
+      const double FPM_RADIUS = 24;
+      const double FPM_LINE_LEN = 6;
+
+      double vertPixelsPerDeg = Grid_Viewport.ActualHeight / VERTICAL_DEG_TO_DISP;
+      double horzPixelsPerDeg = Grid_Viewport.ActualWidth / HORIZONTAL_DEG_TO_DISP;
+
+      double leftOffset = (-FPM_RADIUS / 2.0) + (beta * horzPixelsPerDeg);
+      double rightOffset = (FPM_RADIUS / 2.0) + (beta * horzPixelsPerDeg);
+      double topOffset = (-FPM_RADIUS / 2.0) + (alpha * vertPixelsPerDeg);
+
+      Ellipse body = new Ellipse();
+      body.Stroke = Brushes.White;
+      body.StrokeThickness = 2;
+
+      body.Width = FPM_RADIUS;
+      body.Height = FPM_RADIUS;
+      Canvas.SetLeft(body, leftOffset);
+      Canvas.SetTop(body, topOffset);
+      Canvas_HUD.Children.Add(body);
+
+      Line leftLn = new Line();
+      leftLn.X1 = 0;
+      leftLn.X2 = -FPM_LINE_LEN;
+      leftLn.Y1 = FPM_RADIUS/2.0;
+      leftLn.Y2 = FPM_RADIUS/2.0;
+      leftLn.Stroke = Brushes.White;
+      leftLn.StrokeThickness = 1;
+      Canvas.SetLeft(leftLn, leftOffset);
+      Canvas.SetTop(leftLn, topOffset);
+      Canvas_HUD.Children.Add(leftLn);
+
+      Line rightLn = new Line();
+      rightLn.X1 = 0;
+      rightLn.X2 = FPM_LINE_LEN;
+      rightLn.Y1 = FPM_RADIUS / 2.0;
+      rightLn.Y2 = FPM_RADIUS / 2.0;
+      rightLn.Stroke = Brushes.White;
+      rightLn.StrokeThickness = 1;
+      Canvas.SetLeft(rightLn, rightOffset);
+      Canvas.SetTop(rightLn, topOffset);
+      Canvas_HUD.Children.Add(rightLn);
+
+      Line topLn = new Line();
+      topLn.X1 = 0;
+      topLn.X2 = 0;
+      topLn.Y1 = 0;
+      topLn.Y2 = -FPM_LINE_LEN;
+      topLn.Stroke = Brushes.White;
+      topLn.StrokeThickness = 1;
+      Canvas.SetTop(topLn, topOffset);
+      Canvas.SetLeft(topLn, beta * horzPixelsPerDeg);
+      Canvas_HUD.Children.Add(topLn);
+    }
+
+    private void DrawAlphaBeta(double alpha, double beta)
+    {
+      var txtBlkSpd = new BorderTextLabel();
+      txtBlkSpd.Stroke = Brushes.White;
+      txtBlkSpd.Text = "\u03B1    " + alpha.ToString("+0.0;-0.0;0.0") +
+        "\n\u03B2    " + beta.ToString("+0.0;-0.0;0.0");
+      txtBlkSpd.Foreground = Brushes.White;
+      txtBlkSpd.FontSize = 16;
+      Canvas.SetTop(txtBlkSpd, 200);
+      Canvas.SetLeft(txtBlkSpd, -50);
+      Canvas_LeftHUD.Children.Add(txtBlkSpd);
+    }
+
     protected override void OnRender(DrawingContext drawingContext)
     {
       base.OnRender(drawingContext);
@@ -686,9 +772,19 @@ namespace pilotHUD
       DrawClimbRate(ClimbRate);
       DrawSpeedAndG(SpeedMs, Mach, G_Load);
       DrawAircraft();
+      DrawFlightPathMarker(Alpha, Beta);
+      DrawAlphaBeta(Alpha, Beta);
 
       Canvas_Background.RenderTransform = new RotateTransform(-RollAngle);
-      Canvas_PitchIndicator.RenderTransform = new RotateTransform(-RollAngle);
+
+      double horzPixelsPerDeg = Grid_Viewport.ActualWidth / HORIZONTAL_DEG_TO_DISP;
+      var transformGroup = new TransformGroup();
+      var betaTransform = new TranslateTransform(Beta * horzPixelsPerDeg, 0);
+      var rotateTransform = new RotateTransform(-RollAngle);
+      transformGroup.Children.Add(betaTransform);
+      transformGroup.Children.Add(rotateTransform);
+
+      Canvas_PitchIndicator.RenderTransform = transformGroup;
     }
 
   }

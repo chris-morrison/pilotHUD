@@ -19,7 +19,9 @@
                          MaxClimbRateArrowMag="{Binding ElementName=Slider_MaxClimbArrMag,Path=Value}"
                          SpeedMs="{Binding ElementName=Slider_SpeedMs,Path=Value}"
                          Mach="{Binding ElementName=Slider_Mach,Path=Value}"
-                         G_Load="{Binding ElementName=Slider_G,Path=Value}"/>
+                         G_Load="{Binding ElementName=Slider_G,Path=Value}"
+                         Alpha="{Binding ElementName=Slider_Alpha,Path=Value}"
+                         Beta="{Binding ElementName=Slider_Beta,Path=Value}"/>
     <Border Grid.Column="1">
       <Grid Width="300" Margin="5">
         <Grid.ColumnDefinitions>
@@ -27,6 +29,8 @@
           <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
+          <RowDefinition Height="40"/>
+          <RowDefinition Height="40"/>
           <RowDefinition Height="40"/>
           <RowDefinition Height="40"/>
           <RowDefinition Height="40"/>
@@ -53,6 +57,10 @@
         <Slider Name="Slider_Mach" Grid.Column="1" Grid.Row="6" Minimum="0" Maximum="2" Value="0" TickFrequency="0.1" TickPlacement="BottomRight"  VerticalAlignment="Center"/>
         <TextBlock Text="G" VerticalAlignment="Center" Grid.Row="7"/>
         <Slider Name="Slider_G" Grid.Column="1" Grid.Row="7" Minimum="-10" Maximum="10" Value="0" TickFrequency="1" TickPlacement="BottomRight"  VerticalAlignment="Center"/>
+        <TextBlock Text="Alpha" VerticalAlignment="Center" Grid.Row="8"/>
+        <Slider Name="Slider_Alpha" Grid.Column="1" Grid.Row="8" Minimum="-45" Maximum="45" Value="0" TickFrequency="9" TickPlacement="BottomRight"  VerticalAlignment="Center"/>
+        <TextBlock Text="Beta" VerticalAlignment="Center" Grid.Row="9"/>
+        <Slider Name="Slider_Beta" Grid.Column="1" Grid.Row="9" Minimum="-45" Maximum="45" Value="0" TickFrequency="9" TickPlacement="BottomRight"  VerticalAlignment="Center"/>
       </Grid>
     </Border>
   </Grid>
